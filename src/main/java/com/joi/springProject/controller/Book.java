@@ -1,4 +1,4 @@
-package controller;
+package com.joi.springProject.controller;
 
 import java.time.LocalDate;
 
