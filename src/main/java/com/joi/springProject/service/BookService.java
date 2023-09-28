@@ -1,11 +1,13 @@
 package com.joi.springProject.service;
 
 import com.joi.springProject.controller.Book;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
+@Service
 public class BookService {
     public List<Book> getBooks() {
         return List.of(

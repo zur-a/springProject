@@ -1,13 +1,33 @@
 package com.joi.springProject.controller;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name="Library")
 public class Book {
+    @Id
+    @SequenceGenerator(
+            name="book_sequence",
+            sequenceName="book_sequence",
+            allocationSize=1
+    )
+    @GeneratedValue(
+            strategy=GenerationType.SEQUENCE,
+            generator="book_sequence"
+    )
+    @Column
     private long id;
+    @Column
     private String title;
+    @Column
     private String author;
+    @Column
     private String isbn;
+    @Column
     private String publisher;
+    @Column
     private LocalDate releaseDate;
 
     public Book() {
