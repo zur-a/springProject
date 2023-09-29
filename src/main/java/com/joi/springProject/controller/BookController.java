@@ -19,4 +19,9 @@ public class BookController {
     public List<Book> getBooks() {
         return service.getBooks();
     }
+
+    @PostMapping()
+    public void registerNewBook(@RequestBody Book book) {
+        service.addNewBook(book);
+    }
 }
