@@ -26,4 +26,11 @@ public class BookService {
         }
         repository.save(book);
     }
+
+    public void deleteBook(String isbn) {
+        Optional<Book> bookByIsbn = repository.findBookByIsbn(isbn);
+        if (bookByIsbn.isPresent()) {
+            repository.deleteById(bookByIsbn.get().getId());
+        }
+    }
 }
