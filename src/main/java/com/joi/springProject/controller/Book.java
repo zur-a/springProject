@@ -59,7 +59,7 @@ public class Book {
         this.releaseDate = releaseDate;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
