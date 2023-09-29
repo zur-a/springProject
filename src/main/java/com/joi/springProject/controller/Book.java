@@ -18,7 +18,7 @@ public class Book {
             generator="book_sequence"
     )
     @Column
-    private long id;
+    private Long id;
     @Column
     private String title;
     @Column
@@ -45,7 +45,7 @@ public class Book {
         this.releaseDate = releaseDate;
     }
 
-    public Book(long id,
+    public Book(Long id,
                 String title,
                 String author,
                 String isbn,
@@ -63,7 +63,7 @@ public class Book {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
