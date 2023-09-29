@@ -9,18 +9,17 @@ import java.time.Month;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/book")
 public class BookController {
 
     @Autowired
     BookService service;
 
-    @GetMapping()
+    @GetMapping("/getBooks")
     public List<Book> getBooks() {
         return service.getBooks();
     }
 
-    @PostMapping()
+    @PostMapping("/addBook")
     public void registerNewBook(@RequestBody Book book) {
         service.addNewBook(book);
     }
