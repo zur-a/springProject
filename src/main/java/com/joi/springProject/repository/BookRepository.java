@@ -1,5 +1,5 @@
 package com.joi.springProject.repository;
 
-public class BookRepository {
+public interface BookRepository {
     
 }
