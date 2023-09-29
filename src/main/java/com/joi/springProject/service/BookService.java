@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -19,6 +20,10 @@ public class BookService {
     }
 
     public void addNewBook(Book book) {
-        System.out.println(book);
+        Optional<Book> bookOptional = repository.findBookByIsbn(book.getIsbn());
+        if (bookOptional.isPresent()) {
+            throw new IllegalStateException("E-mail already in use");
+        }
+        repository.save(book);
     }
 }
