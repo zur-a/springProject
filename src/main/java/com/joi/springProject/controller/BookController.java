@@ -33,11 +33,11 @@ public class BookController {
     }
 
     @DeleteMapping("/deleteBook/{isbn}")
-    public ResponseEntity<String> deleteBook(@PathVariable(value="isbn")String isbn) {
+    public ResponseEntity<String> deleteBook(@PathVariable(value="isbn") String isbn) {
         try {
             service.deleteBook(isbn);
-            //Returning the feedback if the book is deleted
-            return new ResponseEntity<>("The book has been deleted", HttpStatus.CREATED);
+            // Return 204 status (No Content) as the book has been successfully deleted
+            return new ResponseEntity<>("The book has been deleted", HttpStatus.NO_CONTENT);
         } catch (NoSuchElementException e) {
             // Book not found, return 404 status
             return new ResponseEntity<>("Book not found", HttpStatus.NOT_FOUND);
@@ -45,14 +45,14 @@ public class BookController {
             // Handle other exceptions as needed
             return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-      }
+    }
 
     @PutMapping("/updateBook/{isbn}")
     public ResponseEntity<String> updateBook(@PathVariable(value="isbn")String isbn, @RequestBody Book updatedBook) {
         try {
             service.updateBook(isbn, updatedBook);
             //Returning the feedback if the book is updated
-            return new ResponseEntity<String>("The book with isbn: " + isbn + " has been updated", HttpStatus.OK);
+            return new ResponseEntity<>("The book with isbn: " + isbn + " has been updated", HttpStatus.OK);
         } catch (NoSuchElementException e) {
             // Book not found, return 404 status
             return new ResponseEntity<>("Book not found", HttpStatus.NOT_FOUND);

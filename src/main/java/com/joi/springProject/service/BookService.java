@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -29,19 +30,25 @@ public class BookService {
 
     public void deleteBook(String isbn) {
         Optional<Book> bookByIsbn = repository.findBookByIsbn(isbn);
-        if (bookByIsbn.isPresent()) {
-            repository.deleteById(bookByIsbn.get().getId());
+        if (!bookByIsbn.isPresent()) {
+            throw new NoSuchElementException("Book not found");
         }
+        repository.deleteById(bookByIsbn.get().getId());
     }
 
     public void updateBook(String isbn, Book updatedBook) {
         Optional<Book> bookToBeUpdated = repository.findBookByIsbn(isbn);
-        if (bookToBeUpdated.isPresent()) {
-            bookToBeUpdated.get().setAuthor(updatedBook.getAuthor());
-            bookToBeUpdated.get().setTitle(updatedBook.getTitle());
-            bookToBeUpdated.get().setPublisher(updatedBook.getPublisher());
-            bookToBeUpdated.get().setReleaseDate(updatedBook.getReleaseDate());
-            repository.save(bookToBeUpdated.get());
+
+        if (!bookToBeUpdated.isPresent()) {
+            throw new NoSuchElementException("Book not found");
         }
+
+        // Book exists, perform the update
+        Book existingBook = bookToBeUpdated.get();
+        existingBook.setAuthor(updatedBook.getAuthor());
+        existingBook.setTitle(updatedBook.getTitle());
+        existingBook.setPublisher(updatedBook.getPublisher());
+        existingBook.setReleaseDate(updatedBook.getReleaseDate());
+        repository.save(existingBook);
     }
 }
