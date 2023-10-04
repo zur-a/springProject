@@ -33,4 +33,15 @@ public class BookService {
             repository.deleteById(bookByIsbn.get().getId());
         }
     }
+
+    public void updateBook(String isbn, Book updatedBook) {
+        Optional<Book> bookToBeUpdated = repository.findBookByIsbn(isbn);
+        if (bookToBeUpdated.isPresent()) {
+            bookToBeUpdated.get().setAuthor(updatedBook.getAuthor());
+            bookToBeUpdated.get().setTitle(updatedBook.getTitle());
+            bookToBeUpdated.get().setPublisher(updatedBook.getPublisher());
+            bookToBeUpdated.get().setReleaseDate(updatedBook.getReleaseDate());
+            repository.save(bookToBeUpdated.get());
+        }
+    }
 }

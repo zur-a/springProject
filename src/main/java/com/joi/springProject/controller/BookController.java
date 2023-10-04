@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -37,21 +38,27 @@ public class BookController {
             service.deleteBook(isbn);
             //Returning the feedback if the book is deleted
             return new ResponseEntity<>("The book has been deleted", HttpStatus.CREATED);
-        } catch(Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } catch (NoSuchElementException e) {
+            // Book not found, return 404 status
+            return new ResponseEntity<>("Book not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // Handle other exceptions as needed
+            return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
       }
 
     @PutMapping("/updateBook/{isbn}")
-    public ResponseEntity<Book> updateBook(@PathVariable(value="isbn")String isbn, @RequestBody Book updatedBook) {
-        Optional<Book> bookToBeUpdated = repository.findBookByIsbn(isbn);
-        if (bookToBeUpdated.isPresent()) {
-            bookToBeUpdated.get().setAuthor(updatedBook.getAuthor());
-            bookToBeUpdated.get().setTitle(updatedBook.getTitle());
-            bookToBeUpdated.get().setPublisher(updatedBook.getPublisher());
-            bookToBeUpdated.get().setReleaseDate(updatedBook.getReleaseDate());
-            repository.save(bookToBeUpdated.get());
+    public ResponseEntity<String> updateBook(@PathVariable(value="isbn")String isbn, @RequestBody Book updatedBook) {
+        try {
+            service.updateBook(isbn, updatedBook);
+            //Returning the feedback if the book is updated
+            return new ResponseEntity<String>("The book with isbn: " + isbn + " has been updated", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            // Book not found, return 404 status
+            return new ResponseEntity<>("Book not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // Handle other exceptions as needed
+            return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<Book>(bookToBeUpdated.get(), HttpStatus.OK);
     }
 }
