@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BookController {
@@ -40,4 +41,17 @@ public class BookController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
       }
+
+    @PutMapping("/updateBook/{isbn}")
+    public ResponseEntity<Book> updateBook(@PathVariable(value="isbn")String isbn, @RequestBody Book updatedBook) {
+        Optional<Book> bookToBeUpdated = repository.findBookByIsbn(isbn);
+        if (bookToBeUpdated.isPresent()) {
+            bookToBeUpdated.get().setAuthor(updatedBook.getAuthor());
+            bookToBeUpdated.get().setTitle(updatedBook.getTitle());
+            bookToBeUpdated.get().setPublisher(updatedBook.getPublisher());
+            bookToBeUpdated.get().setReleaseDate(updatedBook.getReleaseDate());
+            repository.save(bookToBeUpdated.get());
+        }
+        return new ResponseEntity<Book>(bookToBeUpdated.get(), HttpStatus.OK);
+    }
 }
